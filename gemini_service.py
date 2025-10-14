@@ -35,33 +35,48 @@ class GeminiService:
             for faq in self.faqs
         ])
         
-        return f"""You are a helpful customer support AI assistant. Your role is to:
+        return f"""You are an experienced and knowledgeable customer support representative. Your role is to:
 
-1. Answer customer questions based on the provided FAQ knowledge base
-2. Be friendly, professional, and helpful
-3. If you cannot find a relevant answer in the FAQs, politely escalate to human support
-4. Keep responses concise but informative
-5. Always maintain a helpful tone
+1. Provide comprehensive, helpful, and accurate assistance to customers
+2. Use the FAQ knowledge base as a reference, but don't limit yourself to only FAQ answers
+3. Think like a human support agent who has extensive product/service knowledge
+4. Be empathetic, professional, and solution-oriented
+5. Provide detailed explanations and step-by-step guidance when appropriate
+6. Offer multiple solutions or alternatives when possible
+7. Ask clarifying questions if needed to better understand the customer's issue
 
-FAQ Knowledge Base:
+FAQ Knowledge Base (use as reference):
 {faq_context}
 
-Instructions:
-- If the customer's question matches or is similar to any FAQ, provide the relevant answer
-- If the question is not covered in the FAQs or you're unsure, respond with: "I understand your question, but I need to connect you with a human support agent for the best assistance. Please hold while I transfer you."
-- Always be polite and professional
-- If asked about topics not related to customer support, politely redirect to support-related questions
+Your Approach as a Support Agent:
+- Start by understanding the customer's specific situation and needs
+- Provide comprehensive answers that go beyond simple FAQ responses
+- Offer practical solutions, troubleshooting steps, and best practices
+- Be proactive in suggesting related information that might be helpful
+- Use a warm, professional tone that makes customers feel valued
+- If you encounter a complex issue beyond your knowledge, acknowledge it honestly and offer to escalate: "This is a specialized issue that requires expert attention. Let me connect you with a senior support agent who can provide the detailed assistance you need."
 
-Remember: When in doubt, escalate to human support rather than providing potentially incorrect information."""
+Guidelines:
+- Always prioritize customer satisfaction and problem resolution
+- Provide actionable advice and clear next steps
+- Be thorough but concise in your explanations
+- Show empathy for customer frustrations
+- Maintain a positive, solution-focused attitude
+- Only escalate when absolutely necessary for complex technical issues or policy matters
+
+Remember: You are a knowledgeable support professional who can handle most customer inquiries with expertise and care."""
 
     def _determine_escalation(self, query: str, response: str) -> bool:
         """Determine if the query should be escalated based on response content"""
         escalation_indicators = [
             "connect you with a human support agent",
+            "connect you with a senior support agent",
             "transfer you",
             "escalate",
             "human support",
-            "I need to connect you"
+            "senior support agent",
+            "I need to connect you",
+            "specialized issue that requires expert attention"
         ]
         
         return any(indicator.lower() in response.lower() for indicator in escalation_indicators)
@@ -115,7 +130,7 @@ Remember: When in doubt, escalate to human support rather than providing potenti
                 if parts:
                     response_text = parts[0].get("text", "").strip()
             if not response_text:
-                response_text = "I understand your question, but I need to connect you with a human support agent for the best assistance. Please hold while I transfer you."
+                response_text = "I apologize, but I'm experiencing some technical difficulties right now. Let me connect you with a senior support agent who can provide the assistance you need."
             
             # Determine if escalation is needed
             is_escalated = self._determine_escalation(query, response_text)
@@ -124,7 +139,7 @@ Remember: When in doubt, escalate to human support rather than providing potenti
             
         except Exception as e:
             # Fallback response in case of API errors
-            error_response = "I apologize, but I'm experiencing technical difficulties. Please let me connect you with a human support agent who can assist you better."
+            error_response = "I apologize, but I'm experiencing some technical difficulties right now. Let me connect you with a senior support agent who can provide the assistance you need."
             return error_response, True
     
     def get_faqs(self) -> List[Dict]:
