@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Customer Support</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🤖 AI Customer Support</h1>
+            <p>Ask me anything! I'm here to help with your questions.</p>
+        </header>
+        
+        <div class="chat-container">
+            <div id="chat-messages" class="chat-messages">
+                <div class="message bot-message">
+                    <div class="message-content">
+                        <strong>AI Assistant:</strong> Hello! I'm your AI customer support assistant. How can I help you today?
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chat-input-container">
+                <div class="input-group">
+                    <input type="text" id="user-input" placeholder="Type your question here..." maxlength="500">
+                    <button id="send-button" onclick="sendMessage()">Send</button>
+                </div>
+                <div class="escalation-notice" id="escalation-notice" style="display: none;">
+                    <span class="escalation-icon">⚠️</span>
+                    <span>You've been connected to a human support agent. Please wait for assistance.</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="faq-section">
+            <h3>Frequently Asked Questions</h3>
+            <div id="faq-list" class="faq-list">
+                <!-- FAQs will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
